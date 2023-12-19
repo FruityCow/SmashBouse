@@ -1,7 +1,7 @@
 import pyxel
 
 # Initialisation de Pyxel
-pyxel.init(160, 120)
+pyxel.init(256, 144)
 
 # Couleurs
 NOIR = 0
@@ -19,31 +19,33 @@ class CarreBlanc:
         self.color = color
         self.keys = keys
         self.dy = 0
+        self.pointer = "right"
 
     def draw(self):
         "dessine un carré à la position (x,y) de côté (taille) et de couleur BLANC"
         pyxel.rect(self.x, self.y, self.taille, self.taille, self.color)
 
     def update(self):
-        "mat à jour la position du carré"
+        "met à jour la position du carré"
         if pyxel.btn(self.keys[2]):
+            self.pointer = "right"
             self.x += self.vitesse
         if pyxel.btn(self.keys[1]):
+            self.pointer = "left"
             self.x -= self.vitesse
         if pyxel.btn(self.keys[3]):
             self.y += self.vitesse
-
         # saut si le carré est au sol
-        if pyxel.btn(self.keys[0]) and self.y > 106 :
-            self.dy = -10
+        if pyxel.btn(self.keys[0]) and self.y > 132:
+            self.dy = -12
 
         # accélération verticale (gravité)
         self.y += self.dy
         self.dy = min(self.dy + 1, 5)
         # Limitation de la position pour ne pas sortir du cadre
-        self.x = max(0, min(160 - self.taille, self.x))
-        self.y = max(0, min(120 - self.taille, self.y))
-
+        self.x = max(0, min(256 - self.taille, self.x))
+        self.y = max(0, min(144 - self.taille, self.y))
+        
 
 class Jeu :
     "classe qui lance le jeu"
@@ -59,8 +61,7 @@ class Jeu :
         self.carre2.update()
     def draw(self):
         "dessine la fenêtre du jeu avec un fond bleu et le carré dedans"
-        pyxel.cls(1)
+        pyxel.cls(5)
         self.carre.draw()
         self.carre2.draw()
-
 Jeu()
